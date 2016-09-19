@@ -16,6 +16,9 @@ A user system API starter. Bring your own front-end.
  - Admin groups with shared permissions
  - Admin level permissions that override group permissions
 
+## Differences to node.js frame
+
+ - social signup and login
 
 ## Technology
 
