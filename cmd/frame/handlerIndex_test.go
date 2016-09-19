@@ -13,7 +13,7 @@ func TestIndex(t *testing.T) {
 	// SETUP
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	r.GET("/", index)
+	r.GET("/", handlerIndex)
 
 	// RUN
 	req, err := http.NewRequest("GET", "/", nil)

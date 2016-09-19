@@ -20,6 +20,11 @@ A user system API starter. Bring your own front-end.
 
  - social signup and login
 
+## Naming
+
+ - I use handlerName because it's verbose and I don't want occupy common names like "index"
+
+
 ## Technology
 
 Frame is built with the [hapi](https://hapijs.com/) framework. We're

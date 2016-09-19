@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func index(c *gin.Context) {
+func handlerIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message" : "Welcome to the plot device.",
 	})
