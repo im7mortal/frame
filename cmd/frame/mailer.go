@@ -16,6 +16,11 @@ type MailConfig struct {
 	Data     interface{}
 }
 
+func Configure(email, template string, data interface{}) (conf *MailConfig) {
+
+	return
+}
+
 func (conf *MailConfig) SendMail() (err error) {
 	m := gomail.NewMessage()
 
@@ -31,3 +36,4 @@ func (conf *MailConfig) SendMail() (err error) {
 	d := gomail.NewDialer(config.SMTP.Credentials.Host, 587, config.SMTP.Credentials.User, config.SMTP.Credentials.Password)
 	return d.DialAndSend(m)
 }
+
