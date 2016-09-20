@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"github.com/asaskevich/govalidator"
 	"encoding/json"
 	"log"
 )
@@ -16,17 +15,17 @@ func handlerContact(c *gin.Context) {
 		Message string `json:"message" valid:"required"`
 	}
 
-
 	err := json.NewDecoder(c.Request.Body).Decode(&body)
 	if err != nil {
+		println(err.Error())
+		return
 		EXCEPTION(err.Error())
 	}
-	valid, err := govalidator.ValidateStruct(body)
-	if err != nil {
-		EXCEPTION(err.Error())
+	valid, resErr := validate(body)
+	if !valid {
+		c.JSON(http.StatusOK, resErr)
+		return
 	}
-
-	println(valid)
 
 	mailConf := MailConfig{}
 	mailConf.Data = body
@@ -36,7 +35,7 @@ func handlerContact(c *gin.Context) {
 	mailConf.Subject = config.CompanyName + " contact form"
 	//mailConf.ReplyTo = body.Email
 	mailConf.ReplyTo = "im7mortal@gmail.com"
-	mailConf.HtmlPath = "views/contact/email-html.html"
+	mailConf.HtmlPath = "templates/email-html.html"
 
 	if err := mailConf.SendMail(); err != nil {
 		c.JSON(http.StatusOK, gin.H{
