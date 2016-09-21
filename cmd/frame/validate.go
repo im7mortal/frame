@@ -52,3 +52,35 @@ func validate(o interface{}) (bool, *resp)  {
 }
 
 */
+
+
+
+// mapping
+// don't like it
+// rough place
+
+
+type validMessage struct {
+	Message string
+	Tag     string
+}
+var validateMessages map[string]validMessage = map[string]validMessage{
+	"Name: non zero value required": {
+	Message: `child "name" fails because ["name" is required]`,
+	Tag:     "name",
+	},
+	"Email: non zero value required": {
+	Message: `child "email" fails because ["email" is required]`,
+	Tag:     "name",
+	},
+	// this has a special case
+	"Email: ... does not validate as email": {
+	Message: `child "email" fails because ["email" must be a valid email]`,
+	Tag:     "name",
+	},
+	"Message: non zero value required": {
+	Message: `child "message" fails because ["message" is required]`,
+	Tag:     "message",
+	},
+}
+
