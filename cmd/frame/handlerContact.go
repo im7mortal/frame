@@ -3,30 +3,35 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"encoding/json"
 	"log"
 )
 
 func handlerContact(c *gin.Context) {
-
+	err := c.Request.ParseForm()
+	if err != nil {
+		EXCEPTION(err)
+	}
 	var body struct {
 		Name    string `json:"name" valid:"required"`
 		Email   string `json:"email" valid:"email,required"`
 		Message string `json:"message" valid:"required"`
+	} = struct{
+		Name    string `json:"name" valid:"required"`
+		Email   string `json:"email" valid:"email,required"`
+		Message string `json:"message" valid:"required"`
+	}{
+		c.Request.PostForm.Get("name"),
+		c.Request.PostForm.Get("email"),
+		c.Request.PostForm.Get("message"),
 	}
 
-	err := json.NewDecoder(c.Request.Body).Decode(&body)
-	if err != nil {
-		println(err.Error())
-		return
-		EXCEPTION(err.Error())
-	}
 	valid, resErr := validate(body)
 	if !valid {
-		c.JSON(http.StatusOK, resErr)
+		c.JSON(http.StatusBadRequest, resErr)
 		return
 	}
-
+	println("********************************", valid)
+	return
 	mailConf := MailConfig{}
 	mailConf.Data = body
 	mailConf.From = config.SMTP.From.Name + " <" + config.SMTP.From.Address + ">"
