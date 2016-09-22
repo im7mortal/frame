@@ -7,31 +7,20 @@ import (
 )
 
 func handlerContact(c *gin.Context) {
-	err := c.Request.ParseForm()
+	var body struct {
+		Name    string `form:"name" json:"name" valid:"required"`
+		Email   string `form:"email" json:"email" valid:"email,required"`
+		Message string `form:"message" json:"message" valid:"required"`
+	}
+	err := c.Bind(&body)
 	if err != nil {
 		EXCEPTION(err)
 	}
-	var body struct {
-		Name    string `json:"name" valid:"required"`
-		Email   string `json:"email" valid:"email,required"`
-		Message string `json:"message" valid:"required"`
-	} = struct{
-		Name    string `json:"name" valid:"required"`
-		Email   string `json:"email" valid:"email,required"`
-		Message string `json:"message" valid:"required"`
-	}{
-		c.Request.PostForm.Get("name"),
-		c.Request.PostForm.Get("email"),
-		c.Request.PostForm.Get("message"),
-	}
-
 	valid, resErr := validate(body)
 	if !valid {
 		c.JSON(http.StatusBadRequest, resErr)
 		return
 	}
-	println("********************************", valid)
-	return
 	mailConf := MailConfig{}
 	mailConf.Data = body
 	mailConf.From = config.SMTP.From.Name + " <" + config.SMTP.From.Address + ">"
