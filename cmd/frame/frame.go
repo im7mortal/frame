@@ -95,3 +95,16 @@ func main() {
 func redirectToHTTPS(w http.ResponseWriter, req *http.Request) {
 	//http.Redirect(w, req, "https://" + CONF.ORIGIN + req.RequestURI, http.StatusMovedPermanently)
 }
+
+func checkRecover(c *gin.Context) {
+	defer func(c *gin.Context) {
+		if rec := recover(); rec != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"statusCode": 500,
+					"error": "Internal Server Error",
+					"message": "An internal server error occurred",
+				})
+		}
+	}(c)
+	c.Next()
+}
