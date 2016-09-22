@@ -108,3 +108,10 @@ func checkRecover(c *gin.Context) {
 	}(c)
 	c.Next()
 }
+
+func notFound(c *gin.Context) {
+	c.JSON(http.StatusNotFound, gin.H{
+		"statusCode": 404,
+		"error": "Not Found",
+	})
+}

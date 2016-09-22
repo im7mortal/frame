@@ -27,3 +27,19 @@ func TestR500(t *testing.T) {
 		string(resp.Body.Bytes()),
 	)
 }
+
+func TestStatus404(t *testing.T) {
+	router.NoRoute(notFound)
+	req, err := http.NewRequest("GET", "/test400", nil)
+	if err != nil {
+		t.Error(err)
+	}
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+	assert.Equal(t, 404, resp.Code)
+	assert.Equal(
+		t,
+		`{"error":"Not Found","statusCode":404}` + "\n",
+		string(resp.Body.Bytes()),
+	)
+}

@@ -125,8 +125,8 @@ func bindRoutes(router *gin.Engine) {
 		//account > settings > social
 		account.GET("/providerSettings/:provider/", settingsProvider_)
 		account.GET("/providerSettings/:provider/disconnect/", disconnectProvider)
-	}
+	}*/
 
 	//route not found
-	router.NoRoute(renderStatus404)*/
+	router.NoRoute(notFound)
 }
