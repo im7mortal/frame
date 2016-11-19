@@ -97,5 +97,13 @@ var validateMessages map[string]validMessage = map[string]validMessage{
 		Message: `child "message" fails because ["message" is required]`,
 		Tag:     "message",
 	},
+	"Username: non zero value required": {
+		Message: `child "username" fails because ["username" is required]`,
+		Tag:     "username",
+	},
+	"Password: non zero value required": {
+		Message: `child "password" fails because ["password" is required]`,
+		Tag:     "password",
+	},
 }
 

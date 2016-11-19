@@ -12,6 +12,7 @@ func bindRoutes(router *gin.Engine) {
 	{
 		api.GET("/", handlerIndex)
 		api.POST("/contact/", handlerContact)
+		api.POST("/signup/", handlerSignup)
 	}
 
 	//sign up

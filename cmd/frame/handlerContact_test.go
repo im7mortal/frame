@@ -2,12 +2,8 @@ package main
 
 import (
 	"testing"
-	"fmt"
-	"net/http/httptest"
-	"net/http"
 	"github.com/stretchr/testify/assert"
 	"net/url"
-	"bytes"
 )
 
 
@@ -35,7 +31,7 @@ func TestContactValidation(t *testing.T) {
 	form := url.Values{}
 
 	// RUN
-	resp := getPostResponse(&form)
+	resp := getPostResponse("/contact", &form)
 	assert.Equal(t, 400, resp.Code)
 	assert.Equal(
 		t,
@@ -44,7 +40,7 @@ func TestContactValidation(t *testing.T) {
 	)
 
 	form.Set("name", "name")
-	resp = getPostResponse(&form)
+	resp = getPostResponse("/contact", &form)
 	assert.Equal(t, 400, resp.Code)
 	assert.Equal(
 		t,
@@ -53,7 +49,7 @@ func TestContactValidation(t *testing.T) {
 	)
 
 	form.Set("email", "invalidEmail")
-	resp = getPostResponse(&form)
+	resp = getPostResponse("/contact", &form)
 	assert.Equal(t, 400, resp.Code)
 	assert.Equal(
 		t,
@@ -62,7 +58,7 @@ func TestContactValidation(t *testing.T) {
 	)
 
 	form.Set("email", "valid@email.com")
-	resp = getPostResponse(&form)
+	resp = getPostResponse("/contact", &form)
 	assert.Equal(t, 400, resp.Code)
 	assert.Equal(
 		t,
@@ -70,15 +66,4 @@ func TestContactValidation(t *testing.T) {
 		string(resp.Body.Bytes()),
 	)
 	return
-}
-
-func getPostResponse(body *url.Values) *httptest.ResponseRecorder {
-	req, err := http.NewRequest("POST", "/contact", bytes.NewBufferString(body.Encode()))
-	if err != nil {
-		fmt.Println(err)
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp := httptest.NewRecorder()
-	router.ServeHTTP(resp, req)
-	return resp
 }
